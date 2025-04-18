@@ -98,8 +98,10 @@ The new solution will adopt a **serverless architecture** with Firebase as the b
    - Frontend sends requests to Cloud Functions with the JWT token.
    - After a successful login, the API will generate a JWT (JSON Web Token) containing the following claims:
      - **User Details**: Includes user ID, username, and email.
+     - **Roles**: Specifies the user's roles (e.g., `admin`, `user`).
      - **Expiration Date**: Specifies the token's validity period.
      - **Domain**: Indicates the authorized domain (e.g., `maahita.com`).
+     - **Custom Claims**: Any additional claims required for role-based access control (RBAC) or other application-specific purposes.
    - The JWT will be signed using a secure key and returned to the client.
    - Cloud Function validates the token and processes the request.
 
