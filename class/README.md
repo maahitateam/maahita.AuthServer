@@ -168,4 +168,4 @@ The new solution will adopt a **serverless architecture** with Firebase as the b
   - Apply this middleware to all API routes in the Firebase Cloud Functions entry point.
 
   ## High level architecture diagram.
-  ![High level architecture diagram](image.png)
+  ![High level architecture diagram](./images/high-level.png)

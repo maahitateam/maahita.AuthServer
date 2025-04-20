@@ -33,3 +33,53 @@ graph TD
     classDef external fill:#C8E6C9,stroke:#000,stroke-width:2px,color:#000;
     class I external;
 ```
+
+# System Architecture Diagram
+```mermaid
+graph TD
+    A[Frontend] -->|API Calls| B[Backend]
+    B -->|Authentication| C[Firebase Authentication]
+    B -->|Data Storage| D[Firestore Database]
+    B -->|Serverless Functions| E[Firebase Cloud Functions]
+    D -->|Data Sync| A
+    E -->|Triggers| D
+    B -->|External APIs| F[Third-party Services]
+```
+
+# Microservices Architecture Diagram
+```mermaid
+graph LR
+    subgraph Backend
+        S1[Auth Service] -->|Token Validation| S2[User Service]
+        S2 -->|Data Access| S3[Data Service]
+    end
+    S1 -->|Authentication| C[Firebase Authentication]
+    S3 -->|Data Storage| D[Firestore Database]
+    S3 -->|Triggers| E[Firebase Cloud Functions]
+```
+
+# Database Schema
+```mermaid
+erDiagram
+    USERS {
+        string id
+        string name
+        string email
+        string role
+    }
+    POSTS {
+        string id
+        string userId
+        string content
+        date createdAt
+    }
+    COMMENTS {
+        string id
+        string postId
+        string userId
+        string content
+        date createdAt
+    }
+    USERS ||--o{ POSTS : "creates"
+    POSTS ||--o{ COMMENTS : "has"
+```
