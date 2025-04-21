@@ -1,19 +1,36 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import registerRoutes from "./routes/register";
+import loginRoutes from "./routes/login";
+import socialSignInRoutes from "./routes/socialSignIn";
 
-import {onRequest} from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+admin.initializeApp();
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+const app = express();
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+// Middleware for parsing JSON
+app.use(express.json());
+
+// Enable CORS
+app.use(cors({ origin: true }));
+
+// Security middleware
+app.use(helmet());
+
+// Logging middleware
+app.use(morgan('combined'));
+
+// Request body parser for URL encoded form data
+app.use(express.urlencoded({ extended: true }));
+
+// Register atomic route handlers
+app.use("/auth/register", registerRoutes);
+app.use("/auth/login", loginRoutes);
+app.use("/auth/social", socialSignInRoutes);
+
+// Export the Express app as a Firebase Cloud Function
+export const api = functions.https.onRequest(app);
